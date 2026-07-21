@@ -1,0 +1,18 @@
+
+services:
+  cetolhlcs-ros2-node:
+    build:
+      context: .
+      dockerfile: dockerfile.CETOHLCS-ros2-pi
+    container_name: cetolhlcs-ros2-node
+    network_mode: host
+    volumes:
+      - ./../ros2_ws:/ros2_ws
+      - /dev:/dev
+    environment:
+      - ROS_DOMAIN_ID=42
+    command: >
+          bash -c "source /opt/ros/humble/setup.bash &&
+           cd /ros2_ws &&
+           exec tail -f /dev/null"
+    restart: unless-stopped
