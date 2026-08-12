@@ -1,0 +1,13 @@
+# Target labels
+ uagent
+# Source files and their labels
+/ros2_ws/uros_ws/build/micro_ros_agent/agent/src/xrceagent-build/CMakeFiles/uagent
+/ros2_ws/uros_ws/build/micro_ros_agent/agent/src/xrceagent-build/CMakeFiles/uagent.rule
+/ros2_ws/uros_ws/build/micro_ros_agent/agent/src/xrceagent-build/CMakeFiles/uagent-complete.rule
+/ros2_ws/uros_ws/build/micro_ros_agent/agent/src/xrceagent-build/uagent-prefix/src/uagent-stamp/uagent-build.rule
+/ros2_ws/uros_ws/build/micro_ros_agent/agent/src/xrceagent-build/uagent-prefix/src/uagent-stamp/uagent-configure.rule
+/ros2_ws/uros_ws/build/micro_ros_agent/agent/src/xrceagent-build/uagent-prefix/src/uagent-stamp/uagent-download.rule
+/ros2_ws/uros_ws/build/micro_ros_agent/agent/src/xrceagent-build/uagent-prefix/src/uagent-stamp/uagent-install.rule
+/ros2_ws/uros_ws/build/micro_ros_agent/agent/src/xrceagent-build/uagent-prefix/src/uagent-stamp/uagent-mkdir.rule
+/ros2_ws/uros_ws/build/micro_ros_agent/agent/src/xrceagent-build/uagent-prefix/src/uagent-stamp/uagent-patch.rule
+/ros2_ws/uros_ws/build/micro_ros_agent/agent/src/xrceagent-build/uagent-prefix/src/uagent-stamp/uagent-update.rule
