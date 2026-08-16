@@ -6,9 +6,10 @@ services:
       dockerfile: dockerfile.CETOHLCS-ros2-pi
     container_name: cetolhlcs-ros2-node
     network_mode: host
+    privileged: false
     volumes:
-      - ./../ros2_ws:/ros2_ws
-      - /dev:/dev
+      - ./../ros2:/ros2
+      - /sys:/sys
     # Direct character device mapping for SPI 1 and I2C 1
     devices:
       - "/dev/ttyS0:/dev/ttyS0"           # Primary UART / Serial (or /dev/ttyAMA0)
@@ -16,22 +17,22 @@ services:
       - "/dev/ttyAMA4:/dev/ttyAMA4"
       - "/dev/ttyAMA5:/dev/ttyAMA5"
       - "/dev/gpiochip0:/dev/gpiochip0"   # Modern libgpiod interface
-      - "/dev/i2c-1:/dev/i2c-1"         # I2C Bus 1
-      - "/dev/spidev1.0:/dev/spidev1.0" # SPI Bus 1, Chip Select 0
-      - "/dev/spidev1.1:/dev/spidev1.1" # SPI Bus 1, Chip Select 1 (if enabled)
-      - "/dev/spidev1.2:/dev/spidev1.2" # SPI Bus 1, Chip Select 2 (if enabled)
+      - "/dev/i2c-4:/dev/i2c-4"         # I2C Bus 4
+      - "/dev/i2c-1:/dev/i2c-1"
+      - "/dev/spidev0.0:/dev/spidev0.0"
+      - "/dev/spidev1.2:/dev/spidev1.2"
       # (Keep any existing lines like /dev/ttyS0 or /dev/gpiochip0 if you need them)
 
     # Grant container access to host hardware groups
     group_add:
       - "20"    # Typical 'dialout' group for UART/Serial
       - "997"   # Typical 'gpio' group on Raspberry Pi OS
-      - "998"   # Typical 'i2c' group ID on Raspberry Pi OS
-      - "999"   # Typical 'spi' group ID on Raspberry Pi OS
+      - "988"   # Typical 'i2c' group ID on Raspberry Pi OS
+      - "989"   # Typical 'spi' group ID on Raspberry Pi OS
     environment:
       - ROS_DOMAIN_ID=0
     command: >
           bash -c "source /opt/ros/humble/setup.bash &&
-           cd /ros2_ws &&
+           cd /ros2 &&
            exec tail -f /dev/null"
     restart: unless-stopped
