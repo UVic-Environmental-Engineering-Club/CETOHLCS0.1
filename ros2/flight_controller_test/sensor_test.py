@@ -6,7 +6,7 @@ print("Initializing navigator module.")
 navigator.init()
 
 print("Setting led on!")
-navigator.set_led(navigator.UserLed.Led1, False)
+navigator.set_led(navigator.UserLed.Led1, True)
 
 print(f"Temperature: {navigator.read_temp()}")
 print(f"Pressure: {navigator.read_pressure()}")
