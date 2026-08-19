@@ -8,8 +8,12 @@ Clone this repo.
 
 Navigate to the `ros2-docker` directory.
 
-Start the container with:
-`docker compose up -d`
+Start the container with either:
+`docker compose up -d` 
+
+or
+
+`docker compose -f docker-compose-nopi.yml run --rm cetolhlcs-ros2-node bash` (for no devices)
 
 The container's command line can be accessed with:
 `docker exec -it cetolhlcs-ros2-node /bin/bash`
