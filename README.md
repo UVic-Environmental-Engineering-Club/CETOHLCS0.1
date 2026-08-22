@@ -2,20 +2,36 @@
 
 ## Running the ROS2 Docker Container
 
-Ensure that docker and docker compose is installed and docker is running.
+### Prereqs
+* Docker installed and running
+* Cloned repository
 
-Clone this repo.
+### Steps
+1. **Navigate to the Docker directory in cloned repo:**
+     ```bash
+     cd ros2-docker
+     ```
 
-Navigate to the `ros2-docker` directory.
-
-Start the container with either:
-`docker compose up -d` 
-
-or
-
-`docker compose -f docker-compose-nopi.yml run --rm cetolhlcs-ros2-node bash` (for no devices)
-
-The container's command line can be accessed with:
-`docker exec -it cetolhlcs-ros2-node /bin/bash`
+2. **Start the container:**
+   * Standard (with hardware devices):
+     ```bash
+     docker compose up -d
+     ```
+   * development without connected devices):
+     ```bash
+     docker compose -f docker-compose-nopi.yml up -d
+3. **Access the interactive shell:**
+     ```bash
+     docker exec -it cetolhlcs-ros2-node /bin/bash
+     ```
+4. **Stop the container:**
+   * Standard:
+     ```bash
+     docker compose down
+     ```
+   * No-Pi:
+     ```bash
+     docker compose -f docker-compose-nopi.yml down
+     ```
 
 
