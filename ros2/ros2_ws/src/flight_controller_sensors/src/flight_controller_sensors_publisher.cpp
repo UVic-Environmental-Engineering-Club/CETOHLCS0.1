@@ -17,11 +17,10 @@ class FlightControllerSensorsPublisher : public rclcpp::Node
         FlightControllerSensorsPublisher() : Node("flight_controller_sensors_publisher")
         {
 
-            get_parameter_or<std::string>("frame_id", _frame_id, "imu");
-            get_parameter_or<int>("poll_rate", _poll_rate, 1000);
-
-            get_parameter_or<std::string>("topicImu", _topicImu, "/imu/data_raw");
-            get_parameter_or<std::string>("topicMag", _topicMag, "/imu/mag");
+            _frame_id = this->declare_parameter<std::string>("frame_id", "imu");
+            _poll_rate = this->declare_parameter<int>("poll_rate", 15);
+            _topicImu = this->declare_parameter<std::string>("topicImu", "/imu/data_raw");
+            _topicMag = this->declare_parameter<std::string>("topicMag", "/imu/mag");
 
             _publisherIMU = this->create_publisher<sensor_msgs::msg::Imu>(_topicImu, 10);
             _publisherMag = this->create_publisher<sensor_msgs::msg::MagneticField>(_topicMag, 10);
@@ -59,8 +58,6 @@ class FlightControllerSensorsPublisher : public rclcpp::Node
             mag_msg.magnetic_field.z = mag.z/1000000.0; 
 
             _publisherMag->publish(mag_msg);
-            RCLCPP_INFO(this->get_logger(), "Published magnetic field data: x=%f, y=%f, z=%f", mag.x, mag.y, mag.z);
-
 
             auto imu_msg = sensor_msgs::msg::Imu();
             imu_msg.header.frame_id = _frame_id;
@@ -75,9 +72,6 @@ class FlightControllerSensorsPublisher : public rclcpp::Node
             imu_msg.angular_velocity.z = gyro.z;
 
             _publisherIMU->publish(imu_msg);
-            RCLCPP_INFO(this->get_logger(), "Published IMU data: accel x=%f, y=%f, z=%f; gyro x=%f, y=%f, z=%f", 
-                        accel.x, accel.y, accel.z, gyro.x, gyro.y, gyro.z);
-
         }    
 
         rclcpp::Publisher<sensor_msgs::msg::Imu>::SharedPtr _publisherIMU;
@@ -98,13 +92,6 @@ int main(int argc, char * argv[])
 
     rclcpp::init(argc, argv);
     auto node = std::make_shared<FlightControllerSensorsPublisher>();
-
-    node->declare_parameter<std::string>("frame_id", "imu");
-    node->declare_parameter<int>("poll_rate", 1000);
-
-    node->declare_parameter<std::string>("topicImu", "/imu/data_raw");
-    node->declare_parameter<std::string>("topicMag", "/imu/mag");
-    
 
     rclcpp::spin(node);
     rclcpp::shutdown();
