@@ -3,6 +3,7 @@
 
 #include "sensor_msgs/msg/imu.hpp"
 #include "sensor_msgs/msg/magnetic_field.hpp"
+#include "sensor_msgs/msg/temperature.hpp"
 
 #include "bindings.h"
 #include <stdint.h>
@@ -18,15 +19,27 @@ class FlightControllerSensorsPublisher : public rclcpp::Node
         {
 
             _frame_id = this->declare_parameter<std::string>("frame_id", "imu");
-            _poll_rate = this->declare_parameter<int>("poll_rate", 15);
+            _imu_poll_rate = this->declare_parameter<int>("imu_poll_rate", 15);
+            _adc_poll_rate = this->declare_parameter<int>("adc_poll_rate", 100);
+            _sensor_poll_rate = this->declare_parameter<int>("sensor_poll_rate", 1000);
+
             _topicImu = this->declare_parameter<std::string>("topicImu", "/imu/data_raw");
             _topicMag = this->declare_parameter<std::string>("topicMag", "/imu/mag");
-
+            _topicTemp = this->declare_parameter<std::string>("topicTemp", "/pi_temperature");
             _publisherIMU = this->create_publisher<sensor_msgs::msg::Imu>(_topicImu, 10);
             _publisherMag = this->create_publisher<sensor_msgs::msg::MagneticField>(_topicMag, 10);
+            _publisherTemp = this->create_publisher<sensor_msgs::msg::Temperature>(_topicTemp, 10);
 
-            timer_ = this->create_wall_timer(
-                std::chrono::milliseconds(_poll_rate),
+            _imu_timer = this->create_wall_timer(
+                std::chrono::milliseconds(_imu_poll_rate),
+                std::bind(&FlightControllerSensorsPublisher::publish_imu_data, this));
+
+            _adc_timer = this->create_wall_timer(
+                std::chrono::milliseconds(_adc_poll_rate),
+                std::bind(&FlightControllerSensorsPublisher::publish_adc_data, this));
+
+            _sensor_timer = this->create_wall_timer(
+                std::chrono::milliseconds(_sensor_poll_rate),
                 std::bind(&FlightControllerSensorsPublisher::publish_sensor_data, this));
 
             RCLCPP_INFO(this->get_logger(), "Initiating navigator module.\n");
@@ -43,7 +56,7 @@ class FlightControllerSensorsPublisher : public rclcpp::Node
     
     private:
 
-        void publish_sensor_data()
+        void publish_imu_data()
         {
             AxisData mag = read_mag();
             AxisData accel = read_accel();
@@ -72,19 +85,40 @@ class FlightControllerSensorsPublisher : public rclcpp::Node
             imu_msg.angular_velocity.z = gyro.z/4;
 
             _publisherIMU->publish(imu_msg);
-        }    
+        }
+        
+        void publish_adc_data()
+        {
+            // Placeholder for ADC data publishing logic
+        }
+
+        void publish_sensor_data()
+        {
+            float temperature = read_temp();
+
+            auto temp_msg = sensor_msgs::msg::Temperature();
+            temp_msg.header.stamp = this->now();
+            temp_msg.temperature = temperature;
+
+            _publisherTemp->publish(temp_msg);
+        }
 
         rclcpp::Publisher<sensor_msgs::msg::Imu>::SharedPtr _publisherIMU;
         rclcpp::Publisher<sensor_msgs::msg::MagneticField>::SharedPtr _publisherMag;
-        rclcpp::TimerBase::SharedPtr timer_;
+        rclcpp::Publisher<sensor_msgs::msg::Temperature>::SharedPtr _publisherTemp;
+        rclcpp::TimerBase::SharedPtr _imu_timer;
+        rclcpp::TimerBase::SharedPtr _adc_timer;
+        rclcpp::TimerBase::SharedPtr _sensor_timer;
 
-        int _poll_rate;
+        int _imu_poll_rate;
+        int _adc_poll_rate;
+        int _sensor_poll_rate;
 
         std::string _frame_id;
 
         std::string _topicImu;
         std::string _topicMag;
-
+        std::string _topicTemp;
 };
 
 int main(int argc, char * argv[])
