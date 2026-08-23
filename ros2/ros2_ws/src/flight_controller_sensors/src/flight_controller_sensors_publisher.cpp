@@ -63,13 +63,13 @@ class FlightControllerSensorsPublisher : public rclcpp::Node
             imu_msg.header.frame_id = _frame_id;
             imu_msg.header.stamp = mag_msg.header.stamp;
 
-            imu_msg.linear_acceleration.x = accel.x;
-            imu_msg.linear_acceleration.y = accel.y;
+            imu_msg.linear_acceleration.x = accel.y;
+            imu_msg.linear_acceleration.y = accel.x;
             imu_msg.linear_acceleration.z = accel.z;
 
-            imu_msg.angular_velocity.x = gyro.x;
-            imu_msg.angular_velocity.y = gyro.y;
-            imu_msg.angular_velocity.z = gyro.z;
+            imu_msg.angular_velocity.x = gyro.y/4;
+            imu_msg.angular_velocity.y = gyro.x/4;
+            imu_msg.angular_velocity.z = gyro.z/4;
 
             _publisherIMU->publish(imu_msg);
         }    
