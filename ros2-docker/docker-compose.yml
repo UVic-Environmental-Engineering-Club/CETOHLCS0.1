@@ -6,6 +6,9 @@ services:
       dockerfile: dockerfile.CETOHLCS-ros2-pi
     container_name: cetolhlcs-ros2-node
     network_mode: host
+    ipc: host
+    pid: host
+    shm_size: '512m'
     privileged: false
     volumes:
       - ./../ros2:/ros2
@@ -31,6 +34,7 @@ services:
       - "989"   # Typical 'spi' group ID on Raspberry Pi OS
     environment:
       - ROS_DOMAIN_ID=0
+      - ROS_LOCALHOST_ONLY=1
     command: >
           bash -c "source /opt/ros/humble/setup.bash &&
            cd /ros2 &&
