@@ -9,16 +9,7 @@ services:
     privileged: false
     volumes:
       - ./../ros2:/ros2
-      - /sys:/sys
-    # Direct character device mapping for SPI 1 and I2C 1
-      # (Keep any existing lines like /dev/ttyS0 or /dev/gpiochip0 if you need them)
-
-    # Grant container access to host hardware groups
-    group_add:
-      - "20"    # Typical 'dialout' group for UART/Serial
-      - "997"   # Typical 'gpio' group on Raspberry Pi OS
-      - "988"   # Typical 'i2c' group ID on Raspberry Pi OS
-      - "989"   # Typical 'spi' group ID on Raspberry Pi OS
+      - /sys:/sys 
     environment:
       - ROS_DOMAIN_ID=0
     command: >
