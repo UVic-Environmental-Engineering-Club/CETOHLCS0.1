@@ -20,8 +20,9 @@ services:
       - "/dev/ttyAMA4:/dev/ttyAMA4"
       - "/dev/ttyAMA5:/dev/ttyAMA5"
       - "/dev/gpiochip0:/dev/gpiochip0"   # Modern libgpiod interface
-      - "/dev/i2c-4:/dev/i2c-4"         # I2C Bus 4
+      - "/dev/i2c-4:/dev/i2c-4"           # I2C Bus 4
       - "/dev/i2c-1:/dev/i2c-1"
+      - "/dev/i2c-1:/dev/i2c-6"           # I2C Bus 6
       - "/dev/spidev0.0:/dev/spidev0.0"
       - "/dev/spidev1.2:/dev/spidev1.2"
       # (Keep any existing lines like /dev/ttyS0 or /dev/gpiochip0 if you need them)
