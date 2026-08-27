@@ -24,12 +24,12 @@ class DepthPublisher(Node):
 
     pressure_msg = FluidPressure()
     pressure_msg.header.stamp = now
-    pressure_msg.fluid_pressure = 1003.0 #self.sensor.pressure(ms5837.UNITS_Pa)
+    pressure_msg.fluid_pressure = self.sensor.pressure(ms5837.UNITS_Pa)
     self.pressure_pub.publish(pressure_msg)
 
     temp_msg = Temperature()
     temp_msg.header.stamp = now
-    temp_msg.temperature = 15.0 #self.sensor.temperature()
+    temp_msg.temperature = self.sensor.temperature()
     self.temp_pub.publish(temp_msg)
 
 def main():
