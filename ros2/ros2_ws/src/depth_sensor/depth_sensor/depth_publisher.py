@@ -17,9 +17,9 @@ class DepthPublisher(Node):
     self.timer = self.create_timer(1.0, self.read_and_publish)
 
   def read_and_publish(self):
-    #if not self.sensor.read():
-    #  self.get_logger().warn('Sensor read failed')
-    #  return
+    if not self.sensor.read():
+      self.get_logger().warn('Sensor read failed')
+      return
     now = self.get_clock().now().to_msg()
 
     pressure_msg = FluidPressure()
