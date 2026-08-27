@@ -8,7 +8,7 @@ class DepthPublisher(Node):
   def __init__(self):
     super().__init__('depth_publisher')
     
-    self.sensor = ms5837.MS5837_30BA()
+    self.sensor = ms5837.MS5837_30BA(1)
     if not self.sensor.init():
       self.get_logger().error('Failed to initialize sensor')
 
@@ -21,7 +21,7 @@ class DepthPublisher(Node):
       self.get_logger().warn('Sensor read failed')
       return
     now = self.get_clock().now().to_msg()
-
+  
     pressure_msg = FluidPressure()
     pressure_msg.header.stamp = now
     pressure_msg.fluid_pressure = self.sensor.pressure(ms5837.UNITS_Pa)
