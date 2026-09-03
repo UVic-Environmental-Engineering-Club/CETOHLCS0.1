@@ -1,3 +1,8 @@
+"""
+depth_publisher.py
+publisher node code for pressure and temperature topics
+"""
+
 import rclpy
 from . import ms5837
 from rclpy.node import Node
@@ -8,7 +13,7 @@ class DepthPublisher(Node):
   def __init__(self):
     super().__init__('depth_publisher')
     
-    self.sensor = ms5837.MS5837_30BA(1)
+    self.sensor = ms5837.MS5837_30BA(6)
     if not self.sensor.init():
       self.get_logger().error('Failed to initialize sensor')
 

@@ -34,6 +34,46 @@
      docker compose -f docker-compose-nopi.yml down
      ```
 
+## Running Depth Sensor
+
+### Prereqs
+- Docker container running
+- Terminal connected to the container interactive shell
+- Depth sensor connected to I2C 6 on pi hat
+
+### Steps
+1. Navigate to the ros2 workspace
+
+```bash
+cd /ros2/ros2_ws/
+```
+
+2. Build and source workspace
+
+```bash
+colcon build
+source install/setup.bash
+```
+
+3. Run 
+    * Standard (no logging):
+
+     ```bash
+    ros2 run depth_sensor depth_publisher
+     ```
+
+    * With bags (ran using launch):
+
+     ```bash
+    ros2 launch glider_bringup bringup_launch.py
+     ```
+
+4. Plot collected data
+```bash
+cd /ros2/ros2_ws/src/depth_sensor
+python3 data.py
+```
+
 
 ## Flight Controller Sensors Dev Setup
 

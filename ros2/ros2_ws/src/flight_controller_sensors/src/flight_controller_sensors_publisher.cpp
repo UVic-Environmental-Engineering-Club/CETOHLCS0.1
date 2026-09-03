@@ -4,6 +4,7 @@
 #include "sensor_msgs/msg/imu.hpp"
 #include "sensor_msgs/msg/magnetic_field.hpp"
 #include "sensor_msgs/msg/temperature.hpp"
+#include "sensor_msgs/msg/fluid_pressure.hpp"
 
 #include "bindings.h"
 #include <stdint.h>
@@ -26,9 +27,13 @@ class FlightControllerSensorsPublisher : public rclcpp::Node
             _topicImu = this->declare_parameter<std::string>("topicImu", "/imu/data_raw");
             _topicMag = this->declare_parameter<std::string>("topicMag", "/imu/mag");
             _topicTemp = this->declare_parameter<std::string>("topicTemp", "/pi_temperature");
+            _topicPressure = this->declare_parameter<std::string>("topicPressure", "/barometer/pressure");
+
             _publisherIMU = this->create_publisher<sensor_msgs::msg::Imu>(_topicImu, 10);
             _publisherMag = this->create_publisher<sensor_msgs::msg::MagneticField>(_topicMag, 10);
+
             _publisherTemp = this->create_publisher<sensor_msgs::msg::Temperature>(_topicTemp, 10);
+            _publisherPressure = this->create_publisher<sensor_msgs::msg::FluidPressure>(_topicPressure, 10);
 
             _imu_timer = this->create_wall_timer(
                 std::chrono::milliseconds(_imu_poll_rate),
@@ -95,17 +100,27 @@ class FlightControllerSensorsPublisher : public rclcpp::Node
         void publish_sensor_data()
         {
             float temperature = read_temp();
+            float pressure = read_pressure();
 
             auto temp_msg = sensor_msgs::msg::Temperature();
             temp_msg.header.stamp = this->now();
             temp_msg.temperature = temperature;
 
             _publisherTemp->publish(temp_msg);
+
+            auto pressure_msg = sensor_msgs::msg::FluidPressure();
+            pressure_msg.header.stamp = this->now();
+            pressure_msg.fluid_pressure = pressure*10000.0; // Convert from kPa to Pa
+
+            _publisherPressure->publish(pressure_msg);
         }
 
         rclcpp::Publisher<sensor_msgs::msg::Imu>::SharedPtr _publisherIMU;
         rclcpp::Publisher<sensor_msgs::msg::MagneticField>::SharedPtr _publisherMag;
+
         rclcpp::Publisher<sensor_msgs::msg::Temperature>::SharedPtr _publisherTemp;
+        rclcpp::Publisher<sensor_msgs::msg::FluidPressure>::SharedPtr _publisherPressure;
+
         rclcpp::TimerBase::SharedPtr _imu_timer;
         rclcpp::TimerBase::SharedPtr _adc_timer;
         rclcpp::TimerBase::SharedPtr _sensor_timer;
@@ -118,7 +133,9 @@ class FlightControllerSensorsPublisher : public rclcpp::Node
 
         std::string _topicImu;
         std::string _topicMag;
+
         std::string _topicTemp;
+        std::string _topicPressure;
 };
 
 int main(int argc, char * argv[])

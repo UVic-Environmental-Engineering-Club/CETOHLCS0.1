@@ -1,3 +1,10 @@
+"""
+ms5837.py
+MS5837 pressure sensor driver.
+Adapted from Blue Robotics' ms5837-python library.
+https://github.com/bluerobotics/ms5837-python
+"""
+
 try:
     import smbus2 as smbus
 except:
