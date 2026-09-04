@@ -1,4 +1,4 @@
-# `<node_name>`
+# `Flight Controller Sensors`
 
 - **Package:** `flight_controller_sensors`
 - **Executable:** `flight_controller_sensors_publisher`
