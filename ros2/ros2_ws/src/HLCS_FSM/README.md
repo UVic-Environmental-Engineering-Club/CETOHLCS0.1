@@ -33,6 +33,12 @@ most nodes can be run using `ros2 run <package_name> <executable_name>`
 
 ## How it works
 
+
+### FSM Development Phases
+
+
+FSM phase X is defined as a FSM that supports all control systems from 1 up to phase X (see Control System Implementation Phases section)
+
 ### FSM States
 
 | State | Responsibility and functionality |
@@ -103,11 +109,9 @@ The control system will be broken down into the following components:
     * Fixed decent and accent decent rate settings
     * Dive until target depth reached
 
-
 * **Phase 4 (V0 Stretch Target)** - Waypoint Dive
     * Fixed decent and accent decent rate settings calculated based on distance to waypoint
     * Dive until target depth reached
-
 
 * **Phase 5** - Fixed Current Correction Waypoint Dive
     * Fixed decent and accent decent rate settings calculated based on distance to waypoint with a fixed ocean current correction applied.
@@ -116,6 +120,8 @@ The control system will be broken down into the following components:
 * **Phase 6** - Dynamic Current Correction Waypoint Dive
     * Dynamic decent and accent decent rate settings calculated based on distance to waypoint and dead reckoning data.
     * Dive until target depth reached
+
+
 
 ### Pitch Control
 
@@ -144,7 +150,6 @@ The control system will be broken down into the following components:
 * **Phase 2** - Fixed Roll
     * Fixed glider roll angle setting
 
-
 * **Phase 3 (V0 Target)** - Fixed Compass Heading
     * Fixed compass heading setting
 
@@ -156,6 +161,7 @@ The control system will be broken down into the following components:
 
 * **Phase 6** - Dynamic Current Correction Waypoint Compass Heading
     * Dynamic compass heading setting calculated based on waypoint and dead reckoning data.
+
 
 
 
