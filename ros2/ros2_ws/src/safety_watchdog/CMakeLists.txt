@@ -8,6 +8,7 @@ endif()
 # find dependencies
 find_package(ament_cmake REQUIRED)
 find_package(rclcpp REQUIRED)
+find_package(ceto_interfaces REQUIRED)
 
 if(BUILD_TESTING)
   find_package(ament_lint_auto REQUIRED)
@@ -20,5 +21,12 @@ if(BUILD_TESTING)
   set(ament_cmake_cpplint_FOUND TRUE)
   ament_lint_auto_find_test_dependencies()
 endif()
+
+add_executable(safety_watchdog src/safety_watchdog.cpp)
+ament_target_dependencies(safety_watchdog rclcpp ceto_interfaces)
+
+install(TARGETS
+  safety_watchdog
+  DESTINATION lib/${PROJECT_NAME})
 
 ament_package()
