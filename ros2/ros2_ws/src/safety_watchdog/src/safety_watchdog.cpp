@@ -54,6 +54,12 @@ class SafetyWatchdog : public rclcpp::Node
             RCLCPP_INFO(this->get_logger(), "Received LLCS Heartbeat: timestamp=%ld, status=%d", msg->timestamp, msg->status);
             _last_llcs_heartbeat_time = this->now().nanoseconds() / 1000000; // Update the last received heartbeat time in milliseconds
 
+            if(msg->status == 0)
+            {
+                RCLCPP_ERROR(this->get_logger(), "LLCS reported an error! Error code: %d", msg->error);
+                trigger_emergency_state();
+            }
+
         }
 
         void check_llcs_heartbeat()
@@ -61,8 +67,15 @@ class SafetyWatchdog : public rclcpp::Node
             if (((this->now().nanoseconds() / 1000000) - _last_llcs_heartbeat_time) > HEARTBEAT_TIMEOUT_MS)
             {
                 RCLCPP_ERROR(this->get_logger(), "LLCS heartbeat timeout! No heartbeat received for %d ms.", HEARTBEAT_TIMEOUT_MS);
-                // Here you can add additional actions to take when the LLCS heartbeat is lost, such as triggering a safety protocol.
+                trigger_emergency_state();
             }
+        }
+
+        void trigger_emergency_state()
+        {
+            // Implement your safety protocol here
+            RCLCPP_ERROR(this->get_logger(), "Triggering safety protocol");
+            // For example, you might want to shut down certain systems, alert operators, etc.
         }
 
         rclcpp::Publisher<ceto_interfaces::msg::HLCSHeartbeat>::SharedPtr _publisherHLCSHeartbeat;
