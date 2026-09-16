@@ -65,6 +65,8 @@ The safety watchdog will trigger emergency mode in any of the following scenario
 
 The emergency state is a state in the finite state machine(FMS) node that will set all actuators to a state that will surface the glider as quickly as possible, trigger addtional logging, and any other measures that will increase the likely hood of the being able to recover the glider.
 
+To trigger the emergency state in the FSM, the safety watch node(or any other node) can publish an `cetol_interfaces::error` message type to the `error/fatal` topic.
+
 ### HLCS Sensor Limits
 
 The safety watchdog will monitor the following parameters, checking if they are within the listed limits.
