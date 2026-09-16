@@ -46,12 +46,10 @@ FSM phase X is defined as a FSM that supports all control systems from 1 up to p
 | ON | System bootup and calibration. |
 | STANDY | Takes input x waiting time. Wait for time x. Report status back to a ground station. |
 | OFF | Save data and turn everything off sequentially. |
-| Nav\_DIVE | Actuate ‘buoyancy engine’, ‘moving mass’ and ‘rolling mass’ to navigate a glider to a given waypoint. |
-| Nav\_SURFACE | Actuate ‘buoyancy engine’, ’moving mass’ and ‘rolling mass’ to navigate a glider to a given waypoint. |
-| DIVE | Glider just finished a diving navigation mechanism and has arrived at a given waypoint. Takes input x waiting time. Wait for time x then take a transition to the next state. |
+| DIVE_DECENT | Actuate ‘buoyancy engine’, ‘moving mass’ and ‘rolling mass’ to navigate a glider to a given waypoint. |
+| DIVE_ACCENT | Actuate ‘buoyancy engine’, ’moving mass’ and ‘rolling mass’ to navigate a glider to a given waypoint. |
 | SURFACE | Glider just finished a surface navigation mechanism and has arrived at a given waypoint. Takes input x waiting time. Wait for time x. Report status back to a ground station. Take a transition to the next state. |
-| EMERGENCY | Check what was the issue. Save everything. Take a transition to RECOVERY as soon as possible. |
-| RECOVERY | Trigger recovery methods such as maximize buoyancy engine, move moving mass and rolling mass to surface, constantly report back to a ground station and trigger any mechanical recovery method. |
+| EMERGENCY/RECOVERY | Check what was the issue. Save everything. Take a transition to RECOVERY as soon as possible. Trigger recovery methods such as maximize buoyancy engine, move moving mass and rolling mass to surface, constantly report back to a ground station and trigger any mechanical recovery method.|
 
 ![](./images/image4.jpg)
 
