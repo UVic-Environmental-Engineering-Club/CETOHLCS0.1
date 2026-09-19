@@ -1,4 +1,5 @@
 from launch import LaunchDescription
+from datetime import datetime
 from launch.actions import ExecuteProcess, DeclareLaunchArgument
 from launch.conditions import IfCondition
 from launch.substitutions import LaunchConfiguration
@@ -10,6 +11,10 @@ def generate_launch_description():
     # Launch flags
     depth_sensor = LaunchConfiguration('depth_sensor')
     experimental = LaunchConfiguration('experimental')
+
+    # Generate the dynamic path with timestamp (e.g., /ros2/ros2_ws/recordings/rosbag_2026_09_19-14_30_00)
+    timestamp = datetime.now().strftime('%Y_%m_%d-%H_%M_%S')
+    bag_output_path = f"/ros2/ros2_ws/recordings/CETOHLCS_rosbag_{timestamp}"
 
     return LaunchDescription([
 
@@ -29,21 +34,25 @@ def generate_launch_description():
             description='Launch experimental nodes'
         ),
 
+        # ---------------------------------------------------------------------
+        # Recording
+        # ---------------------------------------------------------------------
+        
+
+        # Record temperature
+        ExecuteProcess(
+            cmd=[
+                'ros2', 'bag', 'record',
+                '-s', 'mcap',
+                '--all',
+                '-o', bag_output_path
+            ],
+            output='screen'
+        ),
 
         # ---------------------------------------------------------------------
         # Depth sensor
         # ---------------------------------------------------------------------
-
-        # Delete previous recordings
-        ExecuteProcess(
-            cmd=[
-                'rm', '-rf',
-                '/ros2/ros2_ws/src/depth_sensor/depth_pressure_bag',
-                '/ros2/ros2_ws/src/depth_sensor/depth_temperature_bag'
-            ],
-            output='screen',
-            condition=IfCondition(depth_sensor)
-        ),
 
         # Depth sensor node
         Node(
@@ -54,31 +63,6 @@ def generate_launch_description():
             emulate_tty=True,
             condition=IfCondition(depth_sensor)
         ),
-
-        # Record temperature
-        ExecuteProcess(
-            cmd=[
-                'ros2', 'bag', 'record',
-                '-o',
-                '/ros2/ros2_ws/src/depth_sensor/depth_temperature_bag',
-                '/sensors/temperature'
-            ],
-            output='screen',
-            condition=IfCondition(depth_sensor)
-        ),
-
-        # Record pressure
-        ExecuteProcess(
-            cmd=[
-                'ros2', 'bag', 'record',
-                '-o',
-                '/ros2/ros2_ws/src/depth_sensor/depth_pressure_bag',
-                '/sensors/pressure'
-            ],
-            output='screen',
-            condition=IfCondition(depth_sensor)
-        ),
-
 
         # ---------------------------------------------------------------------
         # Other sections
