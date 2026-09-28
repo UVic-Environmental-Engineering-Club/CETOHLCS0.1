@@ -6,6 +6,8 @@ ENV ROS_DOMAIN_ID=42
 ENV RMW_IMPLEMENTATION=rmw_cyclonedds_cpp
 ENV PYTHONUNBUFFERED=1
 
+WORKDIR /ros2/ros2_ws
+
 # Install additional packages I commonly need
 RUN apt-get update && apt-get install -y \
     python3-pip \
@@ -28,6 +30,7 @@ RUN rosdep update
 
 # Source ROS 2 in bashrc
 RUN echo "source /opt/ros/humble/setup.bash" >> ~/.bashrc
+RUN echo "source /ros2/ros2_ws/install/setup.bash" >> ~/.bashrc
 
 # Set the default command
 CMD ["bash"]
