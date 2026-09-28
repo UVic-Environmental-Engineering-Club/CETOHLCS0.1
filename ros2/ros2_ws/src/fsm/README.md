@@ -1,4 +1,4 @@
-# `HLCS_FSM`
+# `FSM`
 
 - **Package:** `<package_name>`
 - **Executable:** `<executable_name>`
