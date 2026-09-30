@@ -1,4 +1,4 @@
-# `FSM`
+# `CETO FSM`
 
 - **Package:** `<package_name>`
 - **Executable:** `<executable_name>`
