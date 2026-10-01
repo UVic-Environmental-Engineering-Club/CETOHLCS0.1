@@ -3,8 +3,8 @@
 #include <vector>
 #include <memory>
 #include <string>
-// #include "glider_interfaces/msg/glider_waypoint.hpp"
-// #include "glider_interfaces/msg/control_setpoints.hpp" 
+// #include "ceto_interfaces/msg/glider_waypoint.hpp"
+#include "ceto_interfaces/msg/control_setpoints.hpp"
 
 // 1. State Enumeration
 // Matches the specific FSM states defined in the mission architecture.
@@ -23,8 +23,10 @@ enum class StateEnum {
 // It is passed by reference to every state to avoid redundant ROS 2 subscriptions.
 struct CETOContext {
     // Mission Planning
-    std::vector<glider_interfaces::msg::GliderWaypoint> mission_plan;
+    //std::vector<ceto_interfaces::msg::GliderWaypoint> mission_plan;
     size_t current_waypoint_index = 0;
+
+    int stm32_state = -1;
 };
 
 // 3. The Abstract Base Class
@@ -38,7 +40,7 @@ public:
 
     // Triggered continuously by the main FSM timer tick (e.g., 10 Hz).
     // Calculates and returns the target setpoints to be published to the PID nodes.
-    [[nodiscard]] virtual glider_interfaces::msg::ControlSetpoints execute(CETOContext& context) = 0;
+    [[nodiscard]] virtual ceto_interfaces::msg::ControlSetpoints execute(CETOContext& context) = 0;
 
     // Evaluates conditions on every tick to determine if a transition should occur.
     // Returns the same state ID if no transition is needed, or a new state ID to trigger a change.

@@ -3,8 +3,8 @@
 # Timestamp as milliseconds since the LLCS started
 uint64 timestamp
 
-# Status of the LLCS (0 = setup, 1 = run, 2 = emergency)
-uint8 status
+# State of the LLCS (0 = setup, 1 = run, 2 = emergency)
+uint8 state
 
 # Error Code (0 if no error, other codes TBD)
 uint8 error

@@ -16,6 +16,7 @@ rosidl_generate_interfaces(${PROJECT_NAME}
   "msg/HLCSHeartbeat.msg"
   "msg/LLCSHeartbeat.msg"
   "msg/Error.msg"
+  "msg/ControlSetpoints.msg"
 )
 
 

@@ -2,7 +2,7 @@
 
 #include "ceto_fsm/ceto_state.hpp"
 
-class StateOn : public CETOState {
+class StateStandby : public CETOState {
 public:
     void on_enter(CETOContext& context) override;
 

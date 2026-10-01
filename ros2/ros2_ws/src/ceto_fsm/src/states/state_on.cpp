@@ -4,9 +4,9 @@ void StateOn::on_enter(CETOContext& context) {
     // Implementation for entering the ON state
 }
 
-glider_interfaces::msg::ControlSetpoints StateOn::execute(CETOContext& context) {
+ceto_interfaces::msg::ControlSetpoints StateOn::execute(CETOContext& context) {
     // Implementation for executing the ON state
-    glider_interfaces::msg::ControlSetpoints setpoints;
+    ceto_interfaces::msg::ControlSetpoints setpoints;
     // Populate setpoints as needed
     return setpoints;
 }
@@ -14,9 +14,18 @@ glider_interfaces::msg::ControlSetpoints StateOn::execute(CETOContext& context) 
 StateEnum StateOn::check_transitions(CETOContext& context) {
     // Implementation for checking transitions from the ON state
     // Return the next state based on conditions
+
+    if(context.stm32_state == 1) {
+        return StateEnum::STANDBY; // Transition to STANDBY if the STM32 state is 1
+    }
+
     return StateEnum::ON; // Placeholder, replace with actual logic
 }
 
 void StateOn::on_exit(CETOContext& context) {
     // Implementation for exiting the ON state
+}
+
+StateEnum StateOn::get_state_id() const {
+    return StateEnum::ON;
 }

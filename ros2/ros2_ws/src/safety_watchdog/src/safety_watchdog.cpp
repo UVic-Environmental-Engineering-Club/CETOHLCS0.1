@@ -46,7 +46,7 @@ class SafetyWatchdog : public rclcpp::Node
             //Time in milliseconds since node startup
             heartbeat_msg.timestamp = (this->now().nanoseconds() / 1000000) - _node_startup_time; 
 
-            heartbeat_msg.status = 1; // Set the status to indicate the node is alive
+            heartbeat_msg.state = 1; // Set the state to indicate the node is alive
 
             _publisherHLCSHeartbeat->publish(heartbeat_msg);
 
@@ -55,10 +55,10 @@ class SafetyWatchdog : public rclcpp::Node
         void handle_llcs_heartbeat(const ceto_interfaces::msg::LLCSHeartbeat::SharedPtr msg)
         {
             // Handle the received LLCS heartbeat message
-            RCLCPP_INFO(this->get_logger(), "Received LLCS Heartbeat: timestamp=%ld, status=%d", msg->timestamp, msg->status);
+            RCLCPP_INFO(this->get_logger(), "Received LLCS Heartbeat: timestamp=%ld, state=%d", msg->timestamp, msg->state);
             _last_llcs_heartbeat_time = this->now().nanoseconds() / 1000000; // Update the last received heartbeat time in milliseconds
 
-            if(msg->status == 2)
+            if(msg->state == 2)
             {
                 RCLCPP_ERROR(this->get_logger(), "LLCS reported an error! Error code: %d", msg->error);
                 trigger_emergency_state("LLCS error"); //TODO: decode the llcs error code into a human readable message

@@ -4,4 +4,4 @@
 uint64 timestamp
 
 # Status of the HLCS (0 = setup, 1 = run, 2 = emergency)
-uint8 status
+uint8 state
