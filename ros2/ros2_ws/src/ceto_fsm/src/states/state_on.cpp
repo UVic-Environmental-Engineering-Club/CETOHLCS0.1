@@ -1,5 +1,9 @@
 #include "ceto_fsm/states/state_on.hpp"
 
+#define STANDBY_PITCH_SETTING 0.0
+#define STANDBY_ROLL_SETTING 0.0
+#define STANDBY_BALLAST_SETTING 10.0
+
 void StateOn::on_enter(CETOContext& context) {
     // Implementation for entering the ON state
 }
@@ -7,7 +11,9 @@ void StateOn::on_enter(CETOContext& context) {
 ceto_interfaces::msg::ControlSetpoints StateOn::execute(CETOContext& context) {
     // Implementation for executing the ON state
     ceto_interfaces::msg::ControlSetpoints setpoints;
-    // Populate setpoints as needed
+
+    setpoints.pid_mode = ceto_interfaces::msg::ControlSetpoints::MODE_DISABLED;
+
     return setpoints;
 }
 

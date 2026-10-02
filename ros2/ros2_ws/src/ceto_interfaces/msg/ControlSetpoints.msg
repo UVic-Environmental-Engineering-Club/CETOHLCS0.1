@@ -12,10 +12,16 @@ uint8 MODE_OVERRIDE_MAX = 2   # Emergency mode (e.g., max buoyancy, masses full 
 # Global PID state dictated by the FSM
 uint8 pid_mode
 
-# Target Setpoints
-float64 target_depth_m
-float64 target_pitch_deg
-float64 target_roll_deg
+# Target Setpoints (for PID loops)
+float64 target_depth
+float64 target_decent_rate
+float64 target_pitch
+float64 target_roll
+
+# Actuactor Setpoints (for pre-PID control systems)
+float64 target_pitch_setting
+float64 target_ballast_setting
+float64 target_roll_setting
 
 # Active Control Phases 
 # Maps directly to the 1-6 development phases for each control subsystem

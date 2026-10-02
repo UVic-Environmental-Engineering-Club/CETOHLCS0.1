@@ -29,6 +29,11 @@ class CETOFSM : public rclcpp::Node
                 std::bind(&CETOFSM::handle_llcs_heartbeat, this, std::placeholders::_1)
             );
 
+            _publisherControlSetpoints = this->create_publisher<ceto_interfaces::msg::ControlSetpoints>(
+                "/control/setpoints",
+                10
+            );
+
             _tick_timer = this->create_wall_timer(
                 std::chrono::milliseconds(TICK_INTERVAL_MS), // 10 Hz
                 std::bind(&CETOFSM::tick, this));
@@ -39,18 +44,21 @@ class CETOFSM : public rclcpp::Node
 
         CETOContext _context;
         std::unique_ptr<CETOState> _current_state;
-
-        // Subscriptions
+        ceto_interfaces::msg::ControlSetpoints _setpoints;
 
         rclcpp::Subscription<ceto_interfaces::msg::LLCSHeartbeat>::SharedPtr _subscriptionLLCSHeartbeat;
+
+        rclcpp::Publisher<ceto_interfaces::msg::ControlSetpoints>::SharedPtr _publisherControlSetpoints;
 
 
         void tick()
         {
+            
             // This function will be called at 10 Hz
             // Here you would typically call the execute method of the current state
             // and check for transitions to other states.
-            (void)_current_state->execute(_context);
+            _setpoints = _current_state->execute(_context);
+            _publisherControlSetpoints->publish(_setpoints);
 
             const StateEnum next_state = _current_state->check_transitions(_context);
             if (next_state != _current_state->get_state_id())
@@ -74,8 +82,7 @@ class CETOFSM : public rclcpp::Node
 
         void handle_llcs_heartbeat(const ceto_interfaces::msg::LLCSHeartbeat::SharedPtr msg)
         {
-            // Handle the received LLCS heartbeat message
-            _context.stm32_state = msg->state; // Update the context with the new state from LLCS
+            _context.stm32_state = msg->state;
         }
 
         std::unique_ptr<CETOState> create_state(StateEnum state)
