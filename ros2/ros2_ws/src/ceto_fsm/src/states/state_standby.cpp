@@ -15,9 +15,9 @@ ceto_interfaces::msg::ControlSetpoints StateStandby::execute(CETOContext& contex
 
     setpoints.pid_mode = ceto_interfaces::msg::ControlSetpoints::MODE_ACTIVE;
 
-    setpoints.target_ballast_setting = STANDBY_PITCH_SETTING;
-    setpoints.target_pitch_setting = STANDBY_ROLL_SETTING;
-    setpoints.target_roll_setting = STANDBY_BALLAST_SETTING;
+    setpoints.target_ballast_setting = STANDBY_BALLAST_SETTING;
+    setpoints.target_pitch_setting = STANDBY_PITCH_SETTING;
+    setpoints.target_roll_setting = STANDBY_ROLL_SETTING;
 
     return setpoints;
 }
