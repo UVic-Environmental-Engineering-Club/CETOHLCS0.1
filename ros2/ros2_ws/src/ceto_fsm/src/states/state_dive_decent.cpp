@@ -13,16 +13,19 @@ ceto_interfaces::msg::ControlSetpoints StateDiveDecent::on_enter(CETOContext& co
 
     if (waypoint.depth_phase == 1)
     {
+        setpoints.depth_control_phase = 1;
         setpoints.target_ballast_setting = waypoint.decent_ballast_setting;
     }
 
     if(waypoint.pitch_phase == 1)
     {
+        setpoints.pitch_control_phase = 1;
         setpoints.target_pitch_setting = waypoint.decent_pitch_setting;
     }
 
     if(waypoint.roll_phase == 1)
     {
+        setpoints.roll_control_phase = 1;
         setpoints.target_roll_setting = waypoint.decent_roll_setting;
     }
 

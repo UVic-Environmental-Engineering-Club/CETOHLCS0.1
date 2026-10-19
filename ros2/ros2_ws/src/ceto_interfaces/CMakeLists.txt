@@ -18,6 +18,7 @@ rosidl_generate_interfaces(${PROJECT_NAME}
   "msg/Error.msg"
   "msg/ControlSetpoints.msg"
   "msg/GliderWaypoint.msg"
+  "msg/ActuatorSetpoints.msg"
 )
 
 

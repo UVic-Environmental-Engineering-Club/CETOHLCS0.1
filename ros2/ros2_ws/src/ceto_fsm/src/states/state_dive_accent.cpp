@@ -12,16 +12,19 @@ ceto_interfaces::msg::ControlSetpoints StateDiveAccent::on_enter(CETOContext& co
 
     if (waypoint.depth_phase == 1)
     {
+        setpoints.depth_control_phase = 1;
         setpoints.target_ballast_setting = waypoint.accent_ballast_setting;
     }
 
     if (waypoint.pitch_phase == 1)
     {
+        setpoints.pitch_control_phase = 1;
         setpoints.target_pitch_setting = waypoint.accent_pitch_setting;
     }
 
     if (waypoint.roll_phase == 1)
     {
+        setpoints.roll_control_phase = 1;
         setpoints.target_roll_setting = waypoint.accent_roll_setting;
     }
 
@@ -33,7 +36,6 @@ StateEnum StateDiveAccent::check_transitions(CETOContext& context) {
         std::chrono::system_clock::now() - _start_time).count();
 
     if (elapsed_time >= _dive_accent_time) {
-        context.current_waypoint_index++;
         return StateEnum::STANDBY; // Transition to STANDBY after dive accent time
     }
 
@@ -41,7 +43,7 @@ StateEnum StateDiveAccent::check_transitions(CETOContext& context) {
 }
 
 void StateDiveAccent::on_exit(CETOContext& context) {
-    // No state-specific cleanup is needed.
+    context.current_waypoint_index++;
 }
 
 StateEnum StateDiveAccent::get_state_id() const {
