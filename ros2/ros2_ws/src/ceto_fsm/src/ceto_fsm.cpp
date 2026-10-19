@@ -6,6 +6,8 @@
 #include "ceto_fsm/ceto_state.hpp"
 #include "ceto_fsm/states/state_on.hpp"
 #include "ceto_fsm/states/state_standby.hpp"
+#include "ceto_fsm/states/state_dive_decent.hpp"
+#include "ceto_fsm/states/state_dive_accent.hpp"
 
 #include "ceto_interfaces/msg/llcs_heartbeat.hpp"
 
@@ -37,6 +39,7 @@ class CETOFSM : public rclcpp::Node
             _tick_timer = this->create_wall_timer(
                 std::chrono::milliseconds(TICK_INTERVAL_MS), // 10 Hz
                 std::bind(&CETOFSM::tick, this));
+
         }
     
     private:
@@ -71,7 +74,7 @@ class CETOFSM : public rclcpp::Node
                 } else {
                     RCLCPP_ERROR(
                         this->get_logger(),
-                        "No implementation for requested state: %d",
+                        "No implementation found for requested state: %d",
                         static_cast<int>(next_state));
                 }
             }
@@ -87,11 +90,18 @@ class CETOFSM : public rclcpp::Node
 
         std::unique_ptr<CETOState> create_state(StateEnum state)
         {
+            
+            RCLCPP_INFO(this->get_logger(), "Transitioning to State: %d", static_cast<int>(state));
+
             switch (state) {
                 case StateEnum::ON:
                     return std::make_unique<StateOn>();
                 case StateEnum::STANDBY:
                     return std::make_unique<StateStandby>();
+                case StateEnum::DIVE_DECENT:
+                    return std::make_unique<StateDiveDecent>();
+                case StateEnum::DIVE_ACCENT:
+                    return std::make_unique<StateDiveAccent>();
                 default:
                     return nullptr;  // No implementation exists yet for this state.
             }

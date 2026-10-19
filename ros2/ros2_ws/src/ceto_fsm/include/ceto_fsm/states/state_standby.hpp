@@ -17,6 +17,5 @@ public:
     StateEnum get_state_id() const override;
 
 private:
-    int _standby_time = 0; // Time to remain in STANDBY state, in milliseconds
     std::chrono::time_point<std::chrono::system_clock> _start_time; // Time when the state was entered
 };

@@ -7,7 +7,6 @@
 #define STANDBY_BALLAST_SETTING 10.0
 
 void StateStandby::on_enter(CETOContext& context) {
-    this->_standby_time = context.waypoints[context.current_waypoint_index].standby_time;
     this->_start_time = std::chrono::system_clock::now();
 }
 
@@ -36,7 +35,7 @@ StateEnum StateStandby::check_transitions(CETOContext& context) {
     auto elapsed_time = std::chrono::duration_cast<std::chrono::milliseconds>(
         std::chrono::system_clock::now() - _start_time).count();
     
-    if (elapsed_time >= _standby_time) {
+    if (elapsed_time >= context.waypoints[context.current_waypoint_index].standby_time) {
         return StateEnum::DIVE_DECENT; // Transition to DIVE_DECENT after standby time
     }
 
