@@ -5,7 +5,7 @@
 #define STANDBY_ROLL_SETTING 0.0
 #define STANDBY_BALLAST_SETTING 10.0
 
-void StateOn::on_enter(CETOContext& context) {
+ceto_interfaces::msg::ControlSetpoints StateOn::on_enter(CETOContext& context) {
 
     //Placeholder for fetching waypoints from the mission plan file.
     std::vector<ceto_interfaces::msg::GliderWaypoint> waypoints = { 
@@ -30,15 +30,12 @@ void StateOn::on_enter(CETOContext& context) {
 
     context.waypoints = waypoints;
 
-}
-
-ceto_interfaces::msg::ControlSetpoints StateOn::execute(CETOContext& context) {
-    // Implementation for executing the ON state
     ceto_interfaces::msg::ControlSetpoints setpoints;
 
     setpoints.pid_mode = ceto_interfaces::msg::ControlSetpoints::MODE_DISABLED;
 
     return setpoints;
+
 }
 
 StateEnum StateOn::check_transitions(CETOContext& context) {

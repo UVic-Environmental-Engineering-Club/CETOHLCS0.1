@@ -2,13 +2,10 @@
 
 #include <chrono>
 
-void StateDiveDecent::on_enter(CETOContext& context) {
+ceto_interfaces::msg::ControlSetpoints StateDiveDecent::on_enter(CETOContext& context) {
     this->_dive_decent_time = context.waypoints[context.current_waypoint_index].decent_time;
     this->_start_time = std::chrono::system_clock::now();
-}
 
-ceto_interfaces::msg::ControlSetpoints StateDiveDecent::execute(CETOContext& context) {
-    // Implementation for executing the DIVE_DECENT state
     ceto_interfaces::msg::ControlSetpoints setpoints;
     // Populate setpoints as needed    
     setpoints.pid_mode = ceto_interfaces::msg::ControlSetpoints::MODE_ACTIVE;

@@ -1,14 +1,13 @@
 #pragma once
 
 #include "ceto_fsm/ceto_state.hpp"
+#include "ceto_interfaces/msg/control_setpoints.hpp"
 
 #include <chrono>
 
 class StateDiveDecent : public CETOState {
 public:
-    void on_enter(CETOContext& context) override;
-
-    ceto_interfaces::msg::ControlSetpoints execute(CETOContext& context) override;
+    ceto_interfaces::msg::ControlSetpoints on_enter(CETOContext& context) override;
 
     StateEnum check_transitions(CETOContext& context) override;
 

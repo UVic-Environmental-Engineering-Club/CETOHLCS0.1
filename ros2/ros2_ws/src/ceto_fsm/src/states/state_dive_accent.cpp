@@ -2,12 +2,10 @@
 
 #include <chrono>
 
-void StateDiveAccent::on_enter(CETOContext& context) {
+ceto_interfaces::msg::ControlSetpoints StateDiveAccent::on_enter(CETOContext& context) {
     this->_dive_accent_time = context.waypoints[context.current_waypoint_index].accent_time;
     this->_start_time = std::chrono::system_clock::now();
-}
 
-ceto_interfaces::msg::ControlSetpoints StateDiveAccent::execute(CETOContext& context) {
     ceto_interfaces::msg::ControlSetpoints setpoints;
     setpoints.pid_mode = ceto_interfaces::msg::ControlSetpoints::MODE_ACTIVE;
     const auto& waypoint = context.waypoints[context.current_waypoint_index];

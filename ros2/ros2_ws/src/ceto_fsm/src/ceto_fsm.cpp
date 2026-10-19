@@ -21,9 +21,6 @@ class CETOFSM : public rclcpp::Node
         {
             
             _context = CETOContext();
-            
-            _current_state = std::make_unique<StateOn>();
-            _current_state->on_enter(_context);
 
             _subscriptionLLCSHeartbeat = this->create_subscription<ceto_interfaces::msg::LLCSHeartbeat>(
                 "/heartbeat/llcs",
@@ -40,6 +37,9 @@ class CETOFSM : public rclcpp::Node
                 std::chrono::milliseconds(TICK_INTERVAL_MS), // 10 Hz
                 std::bind(&CETOFSM::tick, this));
 
+            _current_state = std::make_unique<StateOn>();
+            _publisherControlSetpoints->publish(_current_state->on_enter(_context));
+
         }
     
     private:
@@ -47,7 +47,6 @@ class CETOFSM : public rclcpp::Node
 
         CETOContext _context;
         std::unique_ptr<CETOState> _current_state;
-        ceto_interfaces::msg::ControlSetpoints _setpoints;
 
         rclcpp::Subscription<ceto_interfaces::msg::LLCSHeartbeat>::SharedPtr _subscriptionLLCSHeartbeat;
 
@@ -60,8 +59,6 @@ class CETOFSM : public rclcpp::Node
             // This function will be called at 10 Hz
             // Here you would typically call the execute method of the current state
             // and check for transitions to other states.
-            _setpoints = _current_state->execute(_context);
-            _publisherControlSetpoints->publish(_setpoints);
 
             const StateEnum next_state = _current_state->check_transitions(_context);
             if (next_state != _current_state->get_state_id())
@@ -70,7 +67,7 @@ class CETOFSM : public rclcpp::Node
                 if (next) {
                     _current_state->on_exit(_context);
                     _current_state = std::move(next);
-                    _current_state->on_enter(_context);
+                    _publisherControlSetpoints->publish(_current_state->on_enter(_context));
                 } else {
                     RCLCPP_ERROR(
                         this->get_logger(),

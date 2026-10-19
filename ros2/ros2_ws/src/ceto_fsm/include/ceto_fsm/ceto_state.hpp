@@ -35,12 +35,8 @@ public:
     virtual ~CETOState() = default;
 
     // Triggered exactly once when the FSM transitions into this state.
-    // Use this to reset internal counters, log state entry, or send one-off commands.
-    virtual void on_enter(CETOContext& context) = 0;
-
-    // Triggered continuously by the main FSM timer tick (e.g., 10 Hz).
-    // Calculates and returns the target setpoints to be published to the PID nodes.
-    [[nodiscard]] virtual ceto_interfaces::msg::ControlSetpoints execute(CETOContext& context) = 0;
+    // Use this to reset internal counters, log state entry, or send one-off commands and set setpoints.
+    [[nodiscard]]virtual ceto_interfaces::msg::ControlSetpoints on_enter(CETOContext& context) = 0;
 
     // Evaluates conditions on every tick to determine if a transition should occur.
     // Returns the same state ID if no transition is needed, or a new state ID to trigger a change.

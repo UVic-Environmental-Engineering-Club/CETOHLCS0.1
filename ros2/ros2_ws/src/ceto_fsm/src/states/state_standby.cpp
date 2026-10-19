@@ -6,16 +6,16 @@
 #define STANDBY_ROLL_SETTING 0.0
 #define STANDBY_BALLAST_SETTING 10.0
 
-void StateStandby::on_enter(CETOContext& context) {
+ceto_interfaces::msg::ControlSetpoints StateStandby::on_enter(CETOContext& context) {
     this->_start_time = std::chrono::system_clock::now();
-}
 
-ceto_interfaces::msg::ControlSetpoints StateStandby::execute(CETOContext& context) {
-    // Implementation for executing the STANDBY state
     ceto_interfaces::msg::ControlSetpoints setpoints;
-    // Populate setpoints as needed
 
     setpoints.pid_mode = ceto_interfaces::msg::ControlSetpoints::MODE_ACTIVE;
+
+    setpoints.depth_control_phase = 1; 
+    setpoints.pitch_control_phase = 1;
+    setpoints.roll_control_phase = 1;
 
     setpoints.target_ballast_setting = STANDBY_BALLAST_SETTING;
     setpoints.target_pitch_setting = STANDBY_PITCH_SETTING;
