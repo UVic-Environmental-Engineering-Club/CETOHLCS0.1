@@ -23,7 +23,7 @@ enum class StateEnum {
 // It is passed by reference to every state to avoid redundant ROS 2 subscriptions.
 struct CETOContext {
     // Mission Planning
-    std::vector<ceto_interfaces::msg::GliderWaypoint> mission_plan;
+    std::vector<ceto_interfaces::msg::GliderWaypoint> waypoints;
     size_t current_waypoint_index = 0;
 
     int stm32_state = -1;
