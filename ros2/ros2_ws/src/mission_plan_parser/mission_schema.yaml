@@ -1,0 +1,25 @@
+depth:
+  phase:
+    1: [descent_time_ms, ascent_time_ms, descent_ballast_setting, ascent_ballast_setting]
+    2: [target_depth_m, descent_ballast_setting, ascent_ballast_setting]
+    3: [target_depth_m, descent_rate_cm_s, ascent_rate_cm_s]
+    4: [target_depth_m]
+    5: [target_depth_m]
+    6: [target_depth_m]
+
+pitch:
+  phase:
+    1: [descent_moving_mass_pos_mm, ascent_moving_mass_pos_mm]
+    3: [descent_pitch_angle_deg, ascent_pitch_angle_deg]
+    4: []
+    5: []
+    6: []
+
+roll:
+  phase:
+    1: [descent_roll_motor_deg, ascent_roll_motor_deg]
+    2: [roll_position_deg]
+    3: [target_compass_heading_deg]
+    4: []
+    5: []
+    6: []

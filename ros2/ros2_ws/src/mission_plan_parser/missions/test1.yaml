@@ -1,0 +1,41 @@
+mission_id: test_mission
+
+waypoints:
+  - id: waypoint_1
+
+    depth:
+      phase: 1
+      descent_time_ms: 60000
+      ascent_time_ms: 60000
+      descent_ballast_setting: 0.2
+      ascent_ballast_setting: 0.8
+
+    pitch:
+      phase: 1
+      descent_moving_mass_pos_mm: 80
+      ascent_moving_mass_pos_mm: 20
+
+    roll:
+      phase: 1
+      descent_roll_motor_deg: 80
+      ascent_roll_motor_deg: 20
+      
+  - id: waypoint_2
+    
+    location: # location data included since depth phase 4 needs it
+      latitude: 12.345
+      longitude: 54
+
+    depth:
+      phase: 4
+      target_depth_m: 150
+
+    pitch:
+      phase: 1
+      ascent_moving_mass_pos_mm: 20
+      descent_moving_mass_pos_mm: 80
+
+    roll:
+      phase: 2
+      ge: 4
+      roll_positio_deg: 160

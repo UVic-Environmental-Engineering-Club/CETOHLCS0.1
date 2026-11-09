@@ -16,6 +16,7 @@ RUN apt-get update && apt-get install -y \
     python3-smbus2 \
     python3-matplotlib \
     ros-humble-rmw-cyclonedds-cpp \
+    libyaml-cpp-dev \
     ros-humble-rviz-common \
     ros-humble-rviz-rendering \
     i2c-tools \
