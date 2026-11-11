@@ -1,7 +1,8 @@
 mission_id: test_mission
 
-waypoints:
+steps:
   - id: waypoint_1
+    type: navigation
 
     depth:
       phase: 1
@@ -21,6 +22,7 @@ waypoints:
       ascent_roll_motor_deg: 20
       
   - id: waypoint_2
+    type: navigation
     
     location: # location data included since depth phase 4 needs it
       latitude: 12.345
@@ -37,5 +39,9 @@ waypoints:
 
     roll:
       phase: 2
-      ge: 4
-      roll_positio_deg: 160
+      roll_position_deg: 160
+
+  - id: wait1
+    type: wait_s
+
+    time: 50000

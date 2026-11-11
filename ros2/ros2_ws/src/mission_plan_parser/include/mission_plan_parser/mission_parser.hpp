@@ -15,8 +15,8 @@ class MissionParser{
     std::string filepath;
     YAML::Node parse_result;
 
-    YAML::Node waypoints;
-    size_t waypoint_count;
+    YAML::Node steps;
+    size_t step_count;
 
     public:
     MissionParser(std::string mission_file_name);
