@@ -1,7 +1,11 @@
 #include "mission_plan_parser/mission_parser.hpp"
 
+const char* DIRECTORY = "/ros2/ros2_ws/src/mission_plan_parser/missions/";
+const char* SCHEMA_DIRECTORY = "/ros2/ros2_ws/src/mission_plan_parser/mission_schema.yaml";
+
 MissionParser::MissionParser(std::string mission_file_name)
-: mission_file_name(mission_file_name){
+: mission_file_name(mission_file_name)
+{
     filepath = DIRECTORY + mission_file_name;
     try{
         parse_result =  YAML::LoadFile(filepath);
@@ -99,7 +103,7 @@ int MissionParser::validate_mission()
                     }
                 }
             }
-            //package and send nav data
+            waypoints.push_back(to_waypoint(step));
         }
         //Type Unkown -----------------------------------------------------------------
         else{
@@ -111,24 +115,35 @@ int MissionParser::validate_mission()
     return 0;
 }
 
-
-int main(int argc, char ** argv)
+waypoint_msg_t MissionParser::to_waypoint(YAML::Node navigation_step)
 {
-    (void) argc;
-    (void) argv;
+    waypoint_msg_t waypoint;
+    waypoint.standby_time = navigation_step["standby_time_s"].as<uint64_t>() * 1000; // s to ms
 
-    if (argc < 2) {
-        std::cerr << "Usage: program <mission.yaml>\n";
-        return 1;
-    }
-    try {
-        MissionParser mission_parser(argv[1]);
-        mission_parser.validate_mission();
-    } catch (const std::exception& e) {
-        std::cerr << "Mission parsing failed: " << e.what() << "\n";
-        return 1;
-    }
+    waypoint.depth_phase = navigation_step["depth"]["phase"].as<uint8_t>();
+    waypoint.pitch_phase = navigation_step["pitch"]["phase"].as<uint8_t>();
+    waypoint.roll_phase = navigation_step["roll"]["phase"].as<uint8_t>();
 
+    if(waypoint.depth_phase == 1)
+    {
+        waypoint.decent_ballast_setting = navigation_step["depth"]["descent_ballast_setting"].as<uint8_t>();
+        waypoint.ascent_ballast_setting = navigation_step["depth"]["ascent_ballast_setting"].as<uint8_t>();
+
+        waypoint.decent_time = navigation_step["depth"]["descent_time_ms"].as<uint64_t>();
+        waypoint.ascent_time = navigation_step["depth"]["ascent_time_ms"].as<uint64_t>();
+    }
     
-    return 0;
+    if(waypoint.pitch_phase == 1)
+    {
+        waypoint.decent_pitch_setting = navigation_step["pitch"]["descent_moving_mass_pos_mm"].as<uint8_t>();
+        waypoint.ascent_pitch_setting = navigation_step["pitch"]["ascent_moving_mass_pos_mm"].as<uint8_t>();
+    }
+
+    if(waypoint.roll_phase == 1)
+    {
+        waypoint.decent_roll_setting = navigation_step["roll"]["descent_roll_motor_deg"].as<uint8_t>();  
+        waypoint.ascent_roll_setting = navigation_step["roll"]["ascent_roll_motor_deg"].as<uint8_t>(); 
+    }
+
+    return waypoint;
 }

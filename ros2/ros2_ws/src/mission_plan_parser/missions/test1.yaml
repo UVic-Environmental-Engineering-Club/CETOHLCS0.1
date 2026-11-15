@@ -9,8 +9,8 @@ steps:
       phase: 1
       descent_time_ms: 60000
       ascent_time_ms: 60000
-      descent_ballast_setting: 0.2
-      ascent_ballast_setting: 0.8
+      descent_ballast_setting: 20
+      ascent_ballast_setting: 80
 
     pitch:
       phase: 1
@@ -25,20 +25,20 @@ steps:
   - id: waypoint_2
     type: navigation
     standby_time_s: 5
-    
-    location: # location data included since depth phase 4 needs it
-      latitude: 12.345
-      longitude: 54
 
     depth:
-      phase: 4
-      target_depth_m: 150
+      phase: 1
+      descent_time_ms: 10000
+      ascent_time_ms: 20000
+      descent_ballast_setting: 20
+      ascent_ballast_setting: 80
 
     pitch:
       phase: 1
-      ascent_moving_mass_pos_mm: 20
       descent_moving_mass_pos_mm: 80
+      ascent_moving_mass_pos_mm: 20
 
     roll:
-      phase: 2
-      roll_position_deg: 160
+      phase: 1
+      descent_roll_motor_deg: 80
+      ascent_roll_motor_deg: 20

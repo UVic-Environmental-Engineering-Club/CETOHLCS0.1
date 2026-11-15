@@ -12,7 +12,9 @@ find_package(ceto_interfaces REQUIRED)
 find_package(yaml-cpp REQUIRED)
 find_package(ceto_interfaces REQUIRED)
 
-add_executable(mission_plan_parser src/mission_parser.cpp)
+add_executable(
+    mission_plan_parser src/mission_parser.cpp src/mission_parser_node.cpp 
+    )
 target_include_directories(mission_plan_parser PUBLIC
   $<BUILD_INTERFACE:${CMAKE_CURRENT_SOURCE_DIR}/include>
   $<INSTALL_INTERFACE:include>)

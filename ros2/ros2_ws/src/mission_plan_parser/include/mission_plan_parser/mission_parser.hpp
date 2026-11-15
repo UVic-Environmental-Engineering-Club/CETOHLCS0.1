@@ -9,10 +9,20 @@
 
 #pragma once 
 
-const char* DIRECTORY = "/ros2/ros2_ws/src/mission_plan_parser/missions/";
-const char* SCHEMA_DIRECTORY = "/ros2/ros2_ws/src/mission_plan_parser/mission_schema.yaml";
+using waypoint_msg_t = ceto_interfaces::msg::GliderWaypoint;
 
 class MissionParser{
+    public:
+
+    MissionParser(std::string mission_file_name);
+    int validate_mission();
+    waypoint_msg_t to_waypoint(YAML::Node navigation_step);
+
+    const std::vector<waypoint_msg_t>& get_waypoints() const 
+    {
+        return waypoints;
+    }
+
     private:
     std::string mission_file_name;
     std::string filepath;
@@ -20,12 +30,6 @@ class MissionParser{
 
     YAML::Node steps;
     size_t step_count;
-    ceto_interfaces::msg::GliderWaypoint waypoint;
-    std::vector<ceto_interfaces::msg::GliderWaypoint>waypoints;
 
-    public:
-    MissionParser(std::string mission_file_name);
-    void to_waypoints();
-    int validate_mission();
-
+    std::vector<waypoint_msg_t>waypoints;
 };
