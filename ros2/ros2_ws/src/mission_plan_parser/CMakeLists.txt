@@ -10,6 +10,7 @@ find_package(ament_cmake REQUIRED)
 find_package(rclcpp REQUIRED)
 find_package(ceto_interfaces REQUIRED)
 find_package(yaml-cpp REQUIRED)
+find_package(ceto_interfaces REQUIRED)
 
 add_executable(mission_plan_parser src/mission_parser.cpp)
 target_include_directories(mission_plan_parser PUBLIC

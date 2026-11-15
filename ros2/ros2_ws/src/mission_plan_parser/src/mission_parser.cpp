@@ -39,30 +39,20 @@ int MissionParser::validate_mission()
         }
         std::string step_type = step["type"].as<std::string>(); 
         std::string step_id = step["id"].as<std::string>();
-        //Type = wait --------------------------------------------------------------------
-        if(step_type == "wait_s"){
-            if (step.size() != 3) {
-                std::cerr << "Incorrect number of parameters in " << step_id<< "\n";
-                return 1;
-            }
-            if (!step["time"]) {
-                std::cerr << "Missing time parameter at step: " << step_id << "\n";
-                return 1;
-            }
-            int time = step["time"].as<int>();
-            //package and send time
-        }
 
         //Type = navigation -----------------------------------------------------------------
-        else if (step_type == "navigation"){
+        if (step_type == "navigation"){
+            if (!step["standby_time_s"]) { //check for standby time
+                std::cerr << "No standby_time_s provided for step:" << step["id"].as<std::string>() << "\n";
+                return 1;
+            }
             for (const auto& section : {"depth", "pitch", "roll"}) {
                 YAML::Node section_node = step[section];
 
                 int phase = section_node["phase"].as<int>();
 
                 YAML::Node required = schema[section]["phase"][phase];
-
-                if (!required) {
+                if (!required) { //check if phase exists
                     std::cerr << "Unknown phase " << phase << " for " << section << "\n";
                     return 1;
                 }

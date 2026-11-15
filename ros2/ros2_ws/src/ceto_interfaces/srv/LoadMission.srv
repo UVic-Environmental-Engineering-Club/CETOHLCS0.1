@@ -1,0 +1,5 @@
+string mission_file_name
+---
+bool success
+string error_message
+ceto_interfaces/GliderWaypoint[] waypoints
