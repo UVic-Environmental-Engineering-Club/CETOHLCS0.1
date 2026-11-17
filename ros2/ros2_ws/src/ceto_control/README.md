@@ -1,9 +1,9 @@
-# `<node_name>`
+# `ceto_control`
 
-- **Package:** `<package_name>`
-- **Executable:** `<executable_name>`
-- **Status:** `Working / In progress / Experimental / Broken`
-- **People:** `<name(s)>`
+- **Package:** `ceto_control`
+- **Executable:** `ceto_control`
+- **Status:** `Phase 1 working`
+- **People:** `Igor`
 
 
 
@@ -14,32 +14,48 @@
 
 The simplest way to get this node running:
 
-**prereqs**
-* `<dependency / hardware / another node>`
-* `<configuration steps>`
+**Prereqs**
+* Depth sensor connected to I2C6 port on pi hat
+* `colcon build --packages-up-to ceto_control`
+* `source install/setup.bash`
 
 **Command**
-
 ```bash
-<command>
+ros2 run ceto_control control_node
 ```
-most nodes can be run using `ros2 run <package_name> <executable_name>`
+*Integrated into launch*
 
+## Sample Test (phase 1)
 
+With ceto_control running, create 2 seperate terminals:
+**Terminal 1**: to listen to actuator msg's
+```bash
+source install/setup.bash
+ros2 topic echo /actuator/setpoints
+```
 
-
+**Terminal 2**: Simulate publishing a ControlSetpoints.msg from FSM
+```bash
+source install/setup.bash
+ros2 topic pub --once /control/setpoints   ceto_interfaces/msg/ControlSetpoints   "{
+    pid_mode: 1,
+    depth_control_phase: 1,
+    pitch_control_phase: 1,
+    roll_control_phase: 1,
+    target_ballast_setting: 50.0,
+    target_pitch_setting: 120.0,
+    target_roll_setting: 20.0
+  }"
+```
 
 
 
 ## How it works
 
-Describe the basic flow of the node.
-
-For example:
-
-1. Subscribes to/Reads `<input>`
-2. Does `<processing/calculation>`
-3. Publishes/sends `<output>`
+1. Subscribes to `ControlSetpoints.msg`
+2. Extracts the phase for each actuator, performs cooresponding
+    Control calculation, and packages new values into ActuatorSetpoints.msg file
+3. Publishes to `ActuatorSetpoints.msg`
 
 
 
@@ -48,23 +64,29 @@ For example:
 
 ## Important parts
 
-* Part (file / class / function) : what it does (short explanation)
-* Part (file / class / function) : what it does (short explanation)
+* *control_node.cpp* :
+* *depth_control.cpp/depth_control.hpp*:  Implements depth control phases and calculates ballast actuator settings.
+* *pitch_control.cpp/pitch_control.hpp* :  Implements pitch control phases and calculates pitch actuator settings. 
+* *roll_control.cpp/roll_control.hpp* : Implements roll control phases and calculates roll actuator settings. 
  
 
 
 
-
-
 ## What has been done
+* Created the ceto_control ROS 2 package.
+* Implemented the main control node and topic interfaces.
+* Created separate classes for depth, pitch, and roll control.
 
-A lightweight record of meaningful progress. Only needed if node is `in progress` otherwise delete 
 
-* thing that works 
-* other thing that works
 
-Focus on information that would help another team member understand the state of the node.
-
+| Phase | Description                                  | Depth Status    | Pitch Status    | Roll Status     |
+| ----- | -------------------------------------------- | --------------- | --------------- | --------------- |
+| 1     | direct actuator setpoint control             | Implemented     | Implemented     | Implemented     |
+| 2     | Basic feedback control                       | Not implemented | Not implemented | Not implemented |
+| 3     | More advanced target/rate control            | Not implemented | Not implemented | Not implemented |
+| 4     | Navigation-aware control                     | Not implemented | Not implemented | Not implemented |
+| 5     | Ocean current correction                     | Not implemented | Not implemented | Not implemented |
+| 6     | Ocean current correction with dead reckoning | Not implemented | Not implemented | Not implemented |
 
 
 
@@ -72,10 +94,10 @@ Focus on information that would help another team member understand the state of
 
 ## To do
 
-* `<next task>`
-* `<bug to investigate>`
-* `<cleanup / improvement>`
-* `<idea that isn't currently important>`
+* Add next phases
+* Implement safe behavior for MODE_DISABLED.
+* Implement emergency behavior for MODE_OVERRIDE_MAX.
+
 
 
 

@@ -16,6 +16,7 @@ def generate_launch_description():
     depth_sensor = LaunchConfiguration('depth_sensor')
     flight_controller_sensors = LaunchConfiguration('flight_controller_sensors')
     experimental = LaunchConfiguration('experimental')
+    control_system = LaunchConfiguration('control_system')
 
     # Generate the dynamic path with timestamp (e.g., /ros2/ros2_ws/recordings/rosbag_2026_09_19-14_30_00)
     timestamp = datetime.now().strftime('%Y_%m_%d-%H_%M_%S')
@@ -55,7 +56,6 @@ def generate_launch_description():
         # ---------------------------------------------------------------------
         # Recording
         # ---------------------------------------------------------------------
-        
 
         # Record temperature
         ExecuteProcess(
@@ -80,6 +80,19 @@ def generate_launch_description():
             output='screen',
             emulate_tty=True,
             condition=IfCondition(depth_sensor)
+        ),
+
+        # ---------------------------------------------------------------------
+        # CETO Control
+        # ---------------------------------------------------------------------
+
+        Node(
+            package='ceto_control',
+            executable='control_node',
+            name='ceto_control',
+            output='screen',
+            emulate_tty=True,
+            condition=IfCondition(ceto_control)
         ),
 
         # ---------------------------------------------------------------------
