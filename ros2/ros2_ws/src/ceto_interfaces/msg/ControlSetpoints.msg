@@ -14,7 +14,7 @@ uint8 pid_mode
 
 # Target Setpoints (for PID loops)
 float64 target_depth
-float64 target_decent_rate
+float64 target_descent_rate
 float64 target_pitch
 float64 target_roll
 
