@@ -1,6 +1,6 @@
-ros2/ros2_ws/build
-ros2/ros2_ws/install
-ros2/ros2_ws/log
+**/build/
+**/install/
+**/log/
 
 /ros2/ros2_ws/src/depth_sensor/depth_temperature_bag 
 /ros2/ros2_ws/src/depth_sensor/depth_pressure_bag 
