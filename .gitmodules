@@ -2,3 +2,6 @@
 	path = ros2/ros2_ws/src/imu_tools
 	url = https://github.com/CCNYRoboticsLab/imu_tools.git
 	branch = humble
+[submodule "ros2/ros2_ws/ros2/ros2_ws/src/bno08x-ros2-driver"]
+	path = ros2/ros2_ws/ros2/ros2_ws/src/bno08x-ros2-driver
+	url = https://github.com/bnbhat/bno08x-ros2-driver.git
