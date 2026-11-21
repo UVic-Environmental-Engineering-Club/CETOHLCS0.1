@@ -43,7 +43,7 @@ class LLCS_Simulator : public rclcpp::Node
             //Time in milliseconds since node startup
             heartbeat_msg.timestamp = (this->now().nanoseconds() / 1000000) - _node_startup_time; 
 
-            heartbeat_msg.status = _llcs_status;
+            heartbeat_msg.state = _llcs_state;
             heartbeat_msg.error = 0; // Set the error to indicate no error
 
             _publisherLLCSHeartbeat->publish(heartbeat_msg);
@@ -52,23 +52,27 @@ class LLCS_Simulator : public rclcpp::Node
         void handle_hlcs_heartbeat(const ceto_interfaces::msg::HLCSHeartbeat::SharedPtr msg)
         {
             // Handle the received HLCS heartbeat message
-            RCLCPP_INFO(this->get_logger(), "Received HLCS Heartbeat: timestamp=%ld, status=%d", msg->timestamp, msg->status);
+            RCLCPP_INFO(this->get_logger(), "Received HLCS Heartbeat: timestamp=%ld, state=%d", msg->timestamp, msg->state);
             _last_hlcs_heartbeat_time = this->now().nanoseconds() / 1000000; // Update the last received heartbeat time in milliseconds
-            _llcs_status = 1;
+
+            _llcs_state = 1;
+            
         }
 
         void check_hlcs_heartbeat()
         {
-            if (_llcs_status == 0 && (((this->now().nanoseconds() / 1000000) - _last_hlcs_heartbeat_time) > STARTUP_HEARTBEAT_TIMEOUT_MS))
+            if (_llcs_state == 0 && (((this->now().nanoseconds() / 1000000) - _last_hlcs_heartbeat_time) > STARTUP_HEARTBEAT_TIMEOUT_MS))
             {
                 RCLCPP_ERROR(this->get_logger(), "HLCS heartbeat timeout! No heartbeat received for %d ms.", STARTUP_HEARTBEAT_TIMEOUT_MS);
                 // Here you can add additional actions to take when the HLCS heartbeat is lost, such as triggering a safety protocol.
+                _llcs_state = 2; // Set the LLCS state to error
             }
 
-            if (_llcs_status == 1 && (((this->now().nanoseconds() / 1000000) - _last_hlcs_heartbeat_time) > RUN_HEARTBEAT_TIMEOUT_MS))
+            if (_llcs_state == 1 && (((this->now().nanoseconds() / 1000000) - _last_hlcs_heartbeat_time) > RUN_HEARTBEAT_TIMEOUT_MS))
             {
                 RCLCPP_ERROR(this->get_logger(), "HLCS heartbeat timeout! No heartbeat received for %d ms.", RUN_HEARTBEAT_TIMEOUT_MS);
                 // Here you can add additional actions to take when the HLCS heartbeat is lost, such as triggering a safety protocol.
+                _llcs_state = 2; // Set the LLCS state to error
             }
         }
 
@@ -79,7 +83,7 @@ class LLCS_Simulator : public rclcpp::Node
         long long _node_startup_time;
         long long _last_hlcs_heartbeat_time;
 
-        int _llcs_status = 0; // 0: startup, 1: running, 2: error
+        int _llcs_state = 0; // 0: startup, 1: running, 2: error
 
 };
 
