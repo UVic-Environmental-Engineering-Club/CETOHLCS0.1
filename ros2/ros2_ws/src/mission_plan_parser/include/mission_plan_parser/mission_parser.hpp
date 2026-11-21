@@ -3,6 +3,7 @@
 #include <stdexcept>
 #include <iostream>
 #include <vector>
+
 #include <yaml-cpp/yaml.h>
 
 #include "ceto_interfaces/msg/glider_waypoint.hpp"
