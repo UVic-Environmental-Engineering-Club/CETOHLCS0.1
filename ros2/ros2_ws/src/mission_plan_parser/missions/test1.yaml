@@ -3,12 +3,12 @@ mission_id: test_mission
 steps:
   - id: waypoint_1
     type: navigation
-    surface_time_s: 5
+    surface_time_s: 6
 
     depth:
       phase: 1
-      descent_time_ms: 60000
-      ascent_time_ms: 60000
+      descent_time_ms: 5000
+      ascent_time_ms: 5000
       descent_ballast_setting: 20
       ascent_ballast_setting: 80
 
@@ -24,12 +24,12 @@ steps:
       
   - id: waypoint_2
     type: navigation
-    surface_time_s: 5
+    surface_time_s: 4
 
     depth:
       phase: 1
-      descent_time_ms: 10000
-      ascent_time_ms: 20000
+      descent_time_ms: 3000
+      ascent_time_ms: 3000
       descent_ballast_setting: 20
       ascent_ballast_setting: 80
 

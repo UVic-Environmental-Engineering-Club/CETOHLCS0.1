@@ -8,6 +8,7 @@
 #include "ceto_fsm/states/state_standby.hpp"
 #include "ceto_fsm/states/state_dive_decent.hpp"
 #include "ceto_fsm/states/state_dive_accent.hpp"
+#include "ceto_fsm/states/state_surface.hpp"
 
 #include "ceto_interfaces/msg/llcs_heartbeat.hpp"
 
@@ -21,6 +22,12 @@ class CETOFSM : public rclcpp::Node
         {
             
             _context = CETOContext();
+
+            _context.clientLoadMission = this->create_client<ceto_interfaces::srv::LoadMission>(
+                "load_mission"
+            );
+
+            _context.clientLoadMission->wait_for_service(std::chrono::seconds(2));
 
             _subscriptionLLCSHeartbeat = this->create_subscription<ceto_interfaces::msg::LLCSHeartbeat>(
                 "/heartbeat/llcs",
@@ -51,7 +58,6 @@ class CETOFSM : public rclcpp::Node
         rclcpp::Subscription<ceto_interfaces::msg::LLCSHeartbeat>::SharedPtr _subscriptionLLCSHeartbeat;
 
         rclcpp::Publisher<ceto_interfaces::msg::ControlSetpoints>::SharedPtr _publisherControlSetpoints;
-
 
         void tick()
         {
@@ -99,6 +105,8 @@ class CETOFSM : public rclcpp::Node
                     return std::make_unique<StateDiveDecent>();
                 case StateEnum::DIVE_ACCENT:
                     return std::make_unique<StateDiveAccent>();
+                case StateEnum::SURFACE:
+                    return std::make_unique<StateSurface>();
                 default:
                     return nullptr;  // No implementation exists yet for this state.
             }

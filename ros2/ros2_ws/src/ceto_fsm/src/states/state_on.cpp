@@ -23,7 +23,8 @@ StateEnum StateOn::check_transitions(CETOContext& context) {
         return StateEnum::STANDBY;
     }
 
-    return StateEnum::ON;
+    return StateEnum::STANDBY;
+    //return StateEnum::ON;
 }
 
 void StateOn::on_exit(CETOContext& context) {

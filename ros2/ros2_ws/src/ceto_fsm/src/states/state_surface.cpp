@@ -39,7 +39,7 @@ StateEnum StateSurface::check_transitions(CETOContext& context) {
         return StateEnum::DIVE_DECENT; // Transition to DIVE_DECENT after standby time
     }
 
-    return StateEnum::STANDBY;
+    return StateEnum::SURFACE; // Stay in SURFACE state
 }
 
 void StateSurface::on_exit(CETOContext& context) {

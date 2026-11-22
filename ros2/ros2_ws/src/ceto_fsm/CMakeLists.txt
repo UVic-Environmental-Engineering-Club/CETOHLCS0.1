@@ -28,6 +28,7 @@ add_executable(ceto_fsm
   src/states/state_standby.cpp
   src/states/state_dive_decent.cpp
   src/states/state_dive_accent.cpp
+  src/states/state_surface.cpp
 )
 target_include_directories(ceto_fsm PUBLIC
   $<BUILD_INTERFACE:${CMAKE_CURRENT_SOURCE_DIR}/include>

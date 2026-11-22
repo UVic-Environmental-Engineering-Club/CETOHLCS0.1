@@ -5,6 +5,8 @@
 #include <string>
 #include "ceto_interfaces/msg/glider_waypoint.hpp"
 #include "ceto_interfaces/msg/control_setpoints.hpp"
+#include "ceto_interfaces/srv/load_mission.hpp"
+#include "rclcpp/rclcpp.hpp"
 
 // 1. State Enumeration
 // Matches the specific FSM states defined in the mission architecture.
@@ -24,6 +26,9 @@ enum class StateEnum {
 struct CETOContext {
     // Mission Planning
     std::vector<ceto_interfaces::msg::GliderWaypoint> waypoints;
+
+    rclcpp::Client<ceto_interfaces::srv::LoadMission>::SharedPtr clientLoadMission;
+
     size_t current_waypoint_index = 0;
 
     int stm32_state = -1;
