@@ -31,6 +31,13 @@ void StateOn::on_exit(CETOContext& context) {
     // Implementation for exiting the ON state
 }
 
+void StateOn::on_control_command(
+    CETOContext&,
+    const ceto_interfaces::srv::FSMControl::Request&,
+    ceto_interfaces::srv::FSMControl::Response& response) {
+    response.success = true;
+}
+
 StateEnum StateOn::get_state_id() const {
     return StateEnum::ON;
 }

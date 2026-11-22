@@ -46,6 +46,13 @@ void StateDiveAccent::on_exit(CETOContext& context) {
     context.current_waypoint_index++;
 }
 
+void StateDiveAccent::on_control_command(
+    CETOContext&,
+    const ceto_interfaces::srv::FSMControl::Request&,
+    ceto_interfaces::srv::FSMControl::Response& response) {
+    response.success = true;
+}
+
 StateEnum StateDiveAccent::get_state_id() const {
     return StateEnum::DIVE_ACCENT;
 }

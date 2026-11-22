@@ -4,6 +4,8 @@
 #include "ceto_interfaces/msg/control_setpoints.hpp"
 #include "ceto_interfaces/srv/load_mission.hpp"
 
+#include "ceto_interfaces/srv/fsm_control.hpp"
+
 #include <chrono>
 
 class StateStandby : public CETOState {
@@ -13,6 +15,11 @@ public:
     StateEnum check_transitions(CETOContext& context) override;
 
     void on_exit(CETOContext& context) override;
+
+    void on_control_command(
+        CETOContext& context,
+        const ceto_interfaces::srv::FSMControl::Request& request,
+        ceto_interfaces::srv::FSMControl::Response& response) override;
     
     StateEnum get_state_id() const override;
 

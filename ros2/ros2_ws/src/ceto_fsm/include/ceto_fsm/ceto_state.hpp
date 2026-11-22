@@ -6,6 +6,7 @@
 #include "ceto_interfaces/msg/glider_waypoint.hpp"
 #include "ceto_interfaces/msg/control_setpoints.hpp"
 #include "ceto_interfaces/srv/load_mission.hpp"
+#include "ceto_interfaces/srv/fsm_control.hpp"
 #include "rclcpp/rclcpp.hpp"
 
 // 1. State Enumeration
@@ -28,6 +29,7 @@ struct CETOContext {
     std::vector<ceto_interfaces::msg::GliderWaypoint> waypoints;
 
     rclcpp::Client<ceto_interfaces::srv::LoadMission>::SharedPtr clientLoadMission;
+    rclcpp::Service<ceto_interfaces::srv::FSMControl>::SharedPtr serviceFSMControl;
 
     size_t current_waypoint_index = 0;
 
@@ -50,6 +52,11 @@ public:
     // Triggered exactly once when leaving the state.
     // Use this to clean up, save data, or explicitly disable PID controllers before swapping states.
     virtual void on_exit(CETOContext& context) = 0;
+
+    virtual void on_control_command(
+        CETOContext& context,
+        const ceto_interfaces::srv::FSMControl::Request& request,
+        ceto_interfaces::srv::FSMControl::Response& response) = 0;
     
     // Returns the identifier for the specific implementation.
     [[nodiscard]] virtual StateEnum get_state_id() const = 0;

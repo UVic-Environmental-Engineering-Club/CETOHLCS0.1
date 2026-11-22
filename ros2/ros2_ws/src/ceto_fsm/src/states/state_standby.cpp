@@ -27,21 +27,6 @@ StateEnum StateStandby::check_transitions(CETOContext& context) {
 
     //Check for start mission command
 
-    if(!_mission_requested) {
-        auto request = std::make_shared<ceto_interfaces::srv::LoadMission::Request>();
-
-        RCLCPP_ERROR(rclcpp::get_logger("StateStandby"), "Requesting mission load from service...");
-
-        request->mission_file_name = "test1.yaml";
-
-        context.clientLoadMission->async_send_request(
-            request,
-            [this, &context](LoadMissionClient::SharedFuture future) {
-                responseCallback(future, context);
-            });
-        _mission_requested = true;
-    }
-
     if(_mission_loaded) {
         return StateEnum::SURFACE;
     }
@@ -65,6 +50,28 @@ void StateStandby::responseCallback(LoadMissionClient::SharedFuture future, CETO
 
 void StateStandby::on_exit(CETOContext& context) {
     // Request mission plan
+}
+
+void StateStandby::on_control_command(
+    CETOContext& context,
+    const ceto_interfaces::srv::FSMControl::Request& request,
+    ceto_interfaces::srv::FSMControl::Response& response) {
+
+    if(!_mission_requested && request.command == "start") {
+        auto mission_plan_request = std::make_shared<ceto_interfaces::srv::LoadMission::Request>();
+
+        RCLCPP_ERROR(rclcpp::get_logger("StateStandby"), "Requesting mission load from service...");
+
+        mission_plan_request->mission_file_name = "test1.yaml";
+
+        context.clientLoadMission->async_send_request(
+            mission_plan_request,
+            [this, &context](LoadMissionClient::SharedFuture future) {
+                responseCallback(future, context);
+            });
+        _mission_requested = true;
+    }
+    response.success = true;
 }
 
 StateEnum StateStandby::get_state_id() const {

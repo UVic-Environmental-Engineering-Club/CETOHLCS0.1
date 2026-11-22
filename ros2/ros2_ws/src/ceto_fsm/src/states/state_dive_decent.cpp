@@ -50,6 +50,13 @@ void StateDiveDecent::on_exit(CETOContext& context) {
     // Implementation for exiting the DIVE_DECENT state
 }
 
+void StateDiveDecent::on_control_command(
+    CETOContext&,
+    const ceto_interfaces::srv::FSMControl::Request&,
+    ceto_interfaces::srv::FSMControl::Response& response) {
+    response.success = true;
+}
+
 StateEnum StateDiveDecent::get_state_id() const {
     return StateEnum::DIVE_DECENT;
 }

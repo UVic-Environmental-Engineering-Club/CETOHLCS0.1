@@ -20,6 +20,7 @@ rosidl_generate_interfaces(${PROJECT_NAME}
   "msg/GliderWaypoint.msg"
   "msg/ActuatorSetpoints.msg"
   "srv/LoadMission.srv"
+  "srv/FSMControl.srv"
 )
 
 

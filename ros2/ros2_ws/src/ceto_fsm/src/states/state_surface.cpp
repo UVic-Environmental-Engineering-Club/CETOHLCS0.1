@@ -46,6 +46,13 @@ void StateSurface::on_exit(CETOContext& context) {
     // Implementation for exiting the SURFACE state
 }
 
+void StateSurface::on_control_command(
+    CETOContext&,
+    const ceto_interfaces::srv::FSMControl::Request&,
+    ceto_interfaces::srv::FSMControl::Response& response) {
+    response.success = true;
+}
+
 StateEnum StateSurface::get_state_id() const {
     return StateEnum::SURFACE;
 }

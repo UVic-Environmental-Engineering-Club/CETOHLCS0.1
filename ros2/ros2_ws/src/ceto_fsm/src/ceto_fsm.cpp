@@ -27,6 +27,16 @@ class CETOFSM : public rclcpp::Node
                 "load_mission"
             );
 
+            _context.serviceFSMControl = this->create_service<ceto_interfaces::srv::FSMControl>(
+                "fsm_control",
+                [this](const std::shared_ptr<ceto_interfaces::srv::FSMControl::Request> request,
+                       std::shared_ptr<ceto_interfaces::srv::FSMControl::Response> response) {
+                    // Handle the FSM control request here
+                    RCLCPP_INFO(this->get_logger(), "Received FSM control request: %s", request->command.c_str());
+                    _current_state->on_control_command(_context, *request, *response);
+                }
+            );
+
             _context.clientLoadMission->wait_for_service(std::chrono::seconds(2));
 
             _subscriptionLLCSHeartbeat = this->create_subscription<ceto_interfaces::msg::LLCSHeartbeat>(
