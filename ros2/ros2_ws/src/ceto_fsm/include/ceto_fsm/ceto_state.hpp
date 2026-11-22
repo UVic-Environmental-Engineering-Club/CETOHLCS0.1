@@ -10,11 +10,11 @@
 // Matches the specific FSM states defined in the mission architecture.
 enum class StateEnum {
     ON,             // System bootup and calibration
-    STANDBY,        // Waiting for input/time, reporting status
+    STANDBY,        // Waiting for input/time, reporting status, not in active mission plan
     OFF,            // Save data, sequential power down
     DIVE_DECENT,    // Active navigation to waypoint (diving)
     DIVE_ACCENT,    // Active navigation to waypoint (surfacing)
-    SURFACE,        // Arrived at surface waypoint, waiting/reporting
+    SURFACE,        // Arrived at surface waypoint, waiting/reporting, still in active mission plan
     EMERGENCY,      // Hardware or software failure detected 
 };
 

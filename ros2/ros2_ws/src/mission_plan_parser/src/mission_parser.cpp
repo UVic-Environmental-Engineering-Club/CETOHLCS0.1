@@ -46,8 +46,8 @@ int MissionParser::validate_mission()
 
         //Type = navigation -----------------------------------------------------------------
         if (step_type == "navigation"){
-            if (!step["standby_time_s"]) { //check for standby time
-                std::cerr << "No standby_time_s provided for step:" << step["id"].as<std::string>() << "\n";
+            if (!step["surface_time_s"]) { //check for surface time
+                std::cerr << "No surface_time_s provided for step:" << step["id"].as<std::string>() << "\n";
                 return 1;
             }
             for (const auto& section : {"depth", "pitch", "roll"}) {
@@ -118,7 +118,7 @@ int MissionParser::validate_mission()
 waypoint_msg_t MissionParser::to_waypoint(YAML::Node navigation_step)
 {
     waypoint_msg_t waypoint;
-    waypoint.standby_time = navigation_step["standby_time_s"].as<uint64_t>() * 1000; // s to ms
+    waypoint.surface_time = navigation_step["surface_time_s"].as<uint64_t>() * 1000; // s to ms
 
     waypoint.depth_phase = navigation_step["depth"]["phase"].as<uint8_t>();
     waypoint.pitch_phase = navigation_step["pitch"]["phase"].as<uint8_t>();

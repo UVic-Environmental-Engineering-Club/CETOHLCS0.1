@@ -1,5 +1,5 @@
 # Start standby time (ms)
-uint64 standby_time
+uint64 surface_time
 
 # Control Phases
 uint8 depth_phase
